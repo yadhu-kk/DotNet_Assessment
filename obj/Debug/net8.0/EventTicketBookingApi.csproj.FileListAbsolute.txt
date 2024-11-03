@@ -6,7 +6,6 @@ C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debu
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\EventTicketBookingApi.dll
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\EventTicketBookingApi.pdb
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\AutoMapper.dll
-C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\Humanizer.dll
@@ -268,3 +267,6 @@ C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\obj\Debu
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\obj\Debug\net8.0\EventTicketBookingApi.pdb
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\obj\Debug\net8.0\EventTicketBookingApi.genruntimeconfig.cache
 C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\obj\Debug\net8.0\ref\EventTicketBookingApi.dll
+C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\obj\Debug\net8.0\EventTicketBookingApi.sourcelink.json
+C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\Npgsql.dll
+C:\Users\yadhu\source\repos\EventTicketBookingApi\EventTicketBookingApi\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

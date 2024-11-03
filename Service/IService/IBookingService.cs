@@ -5,8 +5,9 @@ namespace EventTicketBookingApi.Service.IService
 {
     public interface IBookingService
     {
-        Task<Booking> CreateBookingAsync(BookingRequestDto bookingRequest);
-        Task CancelBookingAsync(int bookingId);
-        Task<bool> ValidateBookingAsync(BookingRequestDto booking);
+        Task<BookingResponseDto> CreateBookingAsync(BookingRequestDto request);
+        Task<CancelBookingResponseDto> CancelBookingAsync(int bookingId);
+        //Task<bool> ValidateBookingAsync(BookingRequestDto booking);
+        //Task CreateBookingAsync(Booking booking);
     }
 }

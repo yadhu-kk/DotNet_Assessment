@@ -28,12 +28,12 @@ namespace EventTicketBookingApi.Controllers
 
 
         // GET: api/Events/5
-        [HttpGet("upcoming")]
+        [HttpGet]
         public async Task<IActionResult> GetUpcomingEvents([FromQuery] EventFilterDto filter)
         {
             try
             {
-                var result = await _eventsService.GetEventsAsync(filter);
+                var result = await _eventsService.GetUpcomingEventsAsync(filter);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -42,6 +42,12 @@ namespace EventTicketBookingApi.Controllers
             }
 
 
+        }
+        [HttpGet("{id}/statistics")]
+        public async Task<IActionResult> GetEventStatistics(int id)
+        {
+            var statistics = await _eventsService.GetEventStatisticsAsync(id);
+            return Ok(statistics);
         }
     }
 }

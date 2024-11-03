@@ -17,7 +17,7 @@ namespace EventTicketBookingApi.Repository
         {
             return await _dbContext.Bookings
                 .Include(b => b.Event)
-                .Include(b => b.Event.TicketCategories)
+                .ThenInclude(e => e.TicketCategories)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
         async Task<IEnumerable<Booking>> GetBookingsByEventAsync(int eventId)
@@ -37,6 +37,37 @@ namespace EventTicketBookingApi.Repository
                 .SumAsync(b => b.Quantity);
 
             return totalTickets >= 6;
+        }
+        //public async Task<Booking> AddAsync(Booking booking)
+        //{
+        //    await _dbContext.AddAsync(booking);
+        //    await _dbContext.SaveChangesAsync();
+        //    return booking;
+        //}
+        public async Task<Booking> GetBookingByIdAsync(int bookingId)
+        {
+            return await _dbContext.Bookings
+                .Include(b => b.Event)
+                .ThenInclude(e => e.TicketCategories)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+        }
+        public async Task CancelBookingAsync(Booking booking)
+        {
+            booking.Status = BookingStatus.CANCELLED;
+            booking.CancellationDate = DateTime.UtcNow;
+            var category = await _dbContext.Events
+                .Include(e => e.TicketCategories)
+                .Where(e => e.Id == booking.EventId)
+                .SelectMany(e => e.TicketCategories)
+                .Where(tc => tc.Id == booking.CategoryId)
+                .FirstOrDefaultAsync();
+
+            if (category != null)
+            {
+                category.AvailableSeats += booking.Quantity;
+                _dbContext.TicketCategories.Update(category);
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

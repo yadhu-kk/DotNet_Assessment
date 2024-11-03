@@ -1,4 +1,5 @@
-﻿using EventTicketBookingApi.Contract;
+﻿using EventTicketBookingApi.Constant;
+using EventTicketBookingApi.Contract;
 using EventTicketBookingApi.Data;
 using EventTicketBookingApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,29 @@ namespace EventTicketBookingApi.Repository
            
             this._dbContext = context;
         }
-        public async Task<Event> GetEventWithCategoriesAsync(int id)
+        //public async Task<Event> GetEventWithCategoriesAsync(int id)
+        //{
+        //    return await _dbContext.Events
+        //        .Include(e => e.TicketCategories)
+        //        .FirstOrDefaultAsync(e => e.Id == id);
+        //}
+        public async Task<Event> GetEventWithCategoriesAsync(int eventId)
         {
-            return await _dbContext.Events
+            var eventDetails = await _dbContext.Events
                 .Include(e => e.TicketCategories)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .Include(e => e.Bookings)
+                .FirstOrDefaultAsync(e => e.Id == eventId);
+
+            if (eventDetails != null)
+            {
+                Console.WriteLine($"Event {eventId} has {eventDetails.Bookings.Count} bookings.");
+            }
+            else
+            {
+                Console.WriteLine($"Event {eventId} not found.");
+            }
+
+            return eventDetails;
         }
         public async Task<IEnumerable<Event>> GetUpcomingEventsAsync(EventFilterDto filter)
         {
@@ -53,5 +72,6 @@ namespace EventTicketBookingApi.Repository
                 _dbContext.TicketCategories.Update(category);
             }
         }
+
     }
 }

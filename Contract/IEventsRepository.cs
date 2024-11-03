@@ -9,7 +9,6 @@ namespace EventTicketBookingApi.Contract
     {
         Task<Event> GetEventWithCategoriesAsync(int id);
         Task<IEnumerable<Event>> GetUpcomingEventsAsync(EventFilterDto filter);
-        //Task<EventStatistics> GetEventStatisticsAsync(int eventId);
         Task UpdateAvailableSeatsAsync(int eventId, int categoryId, int quantity);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using hotelListing.API.Data;
-using hotelListing.API.Models.Country;
-using hotelListing.API.Models.Hotel;
+using EventTicketBookingApi.Data;
+using EventTicketBookingApi.Models;
 
 namespace hotelListing.API.Configuration
 {
@@ -9,8 +8,15 @@ namespace hotelListing.API.Configuration
     {
         public MapperConfig()
         {
-            CreateMap<>().ReverseMap();
-            
+            CreateMap<Booking, BookingRequestDto>().ReverseMap();
+            CreateMap<Booking, BookingResponseDto>().ReverseMap();
+            CreateMap<Event, EventDto>().ReverseMap();
+            CreateMap<Event, EventFilterDto>().ReverseMap();
+            CreateMap<TicketCategory, TicketCategoryDto>().ReverseMap();
+            CreateMap<Booking, CancelBookingResponseDto>().ReverseMap();
+            CreateMap<Event, EventStatisticsDto>().ReverseMap();
+            CreateMap<TicketCategory, CategoryBreakdownDto>().ReverseMap();
+
         }
     }
 }

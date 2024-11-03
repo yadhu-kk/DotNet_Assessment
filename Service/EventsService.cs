@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EventTicketBookingApi.Constant;
 using EventTicketBookingApi.Contract;
 using EventTicketBookingApi.Data;
 using EventTicketBookingApi.Models;
+using EventTicketBookingApi.Repository;
 using EventTicketBookingApi.Service.IService;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,39 +24,37 @@ namespace EventTicketBookingApi.Service
             this._eventRepository=eventsRepository;
             this._mapper=mapper;
         }
-        public Task<Event> GetEventByIdAsync(int id)
+
+        public async Task<IEnumerable<EventDto>> GetUpcomingEventsAsync(EventFilterDto filter)
         {
-           // throw new NotImplementedException();
-           
-            
+            var eventEntities = await _eventRepository.GetUpcomingEventsAsync(filter);
+            var eventDtos = _mapper.Map<IEnumerable<EventDto>>(eventEntities);
+            return eventDtos;
         }
-
-        public async Task<IEnumerable<Event>> GetEventsAsync(EventFilterDto filter)
+        public async Task<EventStatisticsDto> GetEventStatisticsAsync(int eventId)
         {
-            // throw new NotImplementedException();
-            var query = _dbContext.Events.AsQueryable();
-            if (filter.StartDate.HasValue) 
-            { 
-                query=query.Where(e=>e.DateTime >=filter.StartDate);
-            }
-            if (filter.EndDate.HasValue)
-            {
-                query=query.Where(e=>e.DateTime <=filter.EndDate);
-            }
-            if (!string.IsNullOrEmpty(filter.Category))
-            {
-                query = query.Where(e => e.TicketCategories.Any(tc => tc.Name == filter.Category));
-            }
-            if (filter.MinPrice.HasValue) 
-            {
-                query = query.Where(e => e.TicketCategories.Any(tc => tc.Price == filter.MinPrice));
-            }
-            if (filter.MaxPrice.HasValue) 
-            {
-                query = query.Where(e => e.TicketCategories.Any(tc => tc.Price == filter.MaxPrice));
-            }
-            return await query.Include(e => e.TicketCategories).ToListAsync();
+            var eventDetails = await _eventRepository.GetEventWithCategoriesAsync(eventId);
 
+            int totalTicketsSold = eventDetails.Bookings.Count(b => b.Status == BookingStatus.ACTIVE);
+            decimal totalRevenue = eventDetails.Bookings.Sum(b => b.TotalAmount);
+
+            var categoryBreakdown = eventDetails.TicketCategories.Select(tc => new CategoryBreakdownDto
+            {
+                Name = tc.Name,
+                SoldPercentage = (double)(tc.TotalSeats - tc.AvailableSeats) / tc.TotalSeats * 100,
+                Revenue = (tc.TotalSeats - tc.AvailableSeats) * tc.Price
+            }).ToList();
+            Console.WriteLine($"Total Tickets Sold: {totalTicketsSold.ToString()}, Total Revenue: {totalRevenue}");
+
+
+            return new EventStatisticsDto
+            {
+                EventName = eventDetails.Name,
+                TotalCapacity = eventDetails.TicketCategories.Sum(tc => tc.TotalSeats),
+                TicketsSold = totalTicketsSold,
+                Revenue = totalRevenue,
+                CategoryBreakdown = categoryBreakdown
+            };
         }
     }
 }

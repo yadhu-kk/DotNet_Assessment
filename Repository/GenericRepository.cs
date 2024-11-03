@@ -14,9 +14,22 @@ namespace EventTicketBookingApi.Repository
 
         public async Task<T> AddAsync(T entity)
         {
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            //await _context.AddAsync(entity);
+            //await _context.SaveChangesAsync();
+            //return entity;
+            try
+            {
+                await _context.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                // Log the error or throw a more meaningful exception
+                Console.WriteLine($"Error: {ex.Message} - Inner Exception: {ex.InnerException?.Message}");
+
+                throw new InvalidOperationException("An error occurred while saving the entity.", ex);
+            }
         }
 
         public async Task DeleteAsync(int id)
